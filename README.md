@@ -1,4 +1,4 @@
-# Smart Climate Control System (RTOS Project)
+# 👨‍🏫 Smart Climate Control System (RTOS Project)
 
 **Real-Time Operating System (RTOS) Demo Project**
 
