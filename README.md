@@ -31,7 +31,7 @@ Develop a Smart Climate Control System to demonstrate the principles and applica
 
 ## 🛠️ Hardware and Implementation
 
-- **Microcontroller**: YoluUNO platform (ESP32 S3)
+- **Microcontroller**: YoloUNO platform (ESP32 S3)
 - **Sensors**: DHT20 sensor (I2C interface)
 - **Actuators (Simulation using LEDs)**:
   - Heater: LEDs (pins D3, D4)
