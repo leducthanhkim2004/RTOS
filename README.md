@@ -1,107 +1,49 @@
-Real-Time Operating System (RTOS) Project
+# Smart Climate Control System (RTOS Project)
 
-Smart Climate Control System
+**Real-Time Operating System (RTOS) Demo Project**
 
-🚩 Project Deadline: 28.04.2024 before 12:00 AM (Midnight)
+---
 
-🎯 Project Overview
+## 🎯 Project Objective
 
-This project demonstrates the practical application of Real-Time Operating System (RTOS) principles through a Smart Climate Control System. The system continuously monitors and adjusts environmental temperature and humidity using sensors and actuators, implementing a Finite State Machine (FSM) where necessary. Critical implementation constraint: do NOT use delay() function.
+Develop a Smart Climate Control System to demonstrate the principles and application of Real-Time Operating Systems (RTOS). The system actively monitors and adjusts temperature and humidity using sensors and actuators, with all tasks managed through an RTOS scheduler. Crucially, the project avoids the use of any blocking `delay()` functions.
 
-📌 Task Assignments
+---
 
-Task
+## 🚩 Deadline
 
-Team Member
+**28 April 2024, before 12:00 AM (Midnight)**
 
-Implementation Requirements
+---
 
-🟢 BLINKY Task
+## 📌 Task Assignments and Responsibilities
 
-👏 Tuấn Anh
+| Task                           | Assigned Member       | Implementation Details                          |
+| ------------------------------ | --------------------- | ----------------------------------------------- |
+| 🟢 **BLINKY Task**             | 👏 Tuấn Anh           | LED blink every 1 second                        |
+| 🌡️ **Temperature & Humidity** | 🎉 Khôi Vĩ            | Sensor reading every 5 seconds                  |
+| ❄️ **Cooler Task**             | 🙂 Tiến Khoa          | Activate based on temperature thresholds        |
+| 🔥 **Heater Task**             | 😂 Minh Trí           | LED indication: Green, Orange, Red based on temperature range |
+| 💧 **Humidifier Task**         | 👏 Thanh Kim          | FSM implementation: Green (5s) → Yellow (3s) → Red (2s) cycle |
+| 📑 **Final Report & Docs**     | ✨ Anh Toàn, ✨ Thái An | Documentation, GitHub README, and final report  |
 
-Period: 1 second
+---
 
-🌡️ Temperature & Humidity
+## 🛠️ Hardware and Implementation
 
-🎉 Khôi Vĩ
+- **Microcontroller**: YoluUNO platform (ESP32 S3)
+- **Sensors**: DHT20 sensor (I2C interface)
+- **Actuators (Simulation using LEDs)**:
+  - Heater: LEDs (pins D3, D4)
+  - Cooler: LEDs (pins D5, D6)
+  - Humidifier: LEDs (pins D7, D8)
 
-Period: 5 seconds
+---
 
-❄️ Cooler Task
+## 📝 Guidelines
 
-🙂 Tiến Khoa
+- Use RTOS scheduling strictly.
+- No `delay()` calls; all tasks must use RTOS tick scheduling.
+- Clearly document FSM implementations and task interactions.
 
-RTOS-based periodic control
-
-🔥 Heater Task
-
-😂 Minh Trí
-
-LED indicators (Green, Orange, Red)
-
-💧 Humidifier Task
-
-👏 Thanh Kim
-
-FSM: Green(5s) → Yellow(3s) → Red(2s) cycle
-
-📑 Final Report
-
-✨ Anh Toàn, ✨ Thái An
-
-Comprehensive documentation & GitHub README
-
-📂 Project Structure
-
-Project/
-├── include/
-│   ├── scheduler.h
-│   ├── software_timer.h
-│   └── tasks/
-│       ├── blinky_task.h
-│       ├── temperature_humidity_task.h
-│       ├── cooler_task.h
-│       ├── heater_task.h
-│       └── humidifier_task.h
-├── src/
-│   ├── main.c
-│   ├── scheduler.c
-│   └── tasks/
-│       ├── blinky_task.c
-│       ├── temperature_humidity_task.c
-│       ├── cooler_task.c
-│       ├── heater_task.c
-│       └── humidifier_task.c
-└── README.md
-
-⚙️ Implementation Notes
-
-Sensors: DHT20 Temperature and Humidity sensor connected via I2C.
-
-Actuators: Simulated through LEDs for demonstration:
-
-Heater LEDs (D3, D4)
-
-Cooler LEDs (D5, D6)
-
-Humidifier LEDs (D7, D8)
-
-📝 Coding Guidelines
-
-Adhere strictly to RTOS principles; no blocking delay() function allowed.
-
-Implement FSM clearly for the Humidifier Task, updating states at 1 TICK intervals.
-
-Use provided libraries and task scheduling methods effectively.
-
-🗓️ Submission
-
-Ensure code is fully tested, functional, and pushed to the project’s GitHub repository.
-
-Final documentation must reflect the individual contributions and collaborative efforts clearly.
-
-🎖️ Acknowledgments
-
-Thank you to all team members for your efforts and commitment. Let's ensure timely submission and successful demonstration of our RTOS project!
-
+---
