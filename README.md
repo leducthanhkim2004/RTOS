@@ -20,10 +20,10 @@ Develop a Smart Climate Control System to demonstrate the principles and applica
 
 | Task                           | Assigned Member       | Implementation Details                          |
 | ------------------------------ | --------------------- | ----------------------------------------------- |
-| 🟢 **BLINKY Task**             | 👏 Tuấn Anh           | LED blink every 1 second                        |
-| 🌡️ **Temperature & Humidity** | 🎉 Khôi Vĩ            | Sensor reading every 5 seconds                  |
+| 🟢 **BLINKY Task**             | 🫀 Tuấn Anh           | LED blink every 1 second                        |
+| 🌡️ **Temperature & Humidity** |  👨‍❤️‍👨 Khôi Vĩ            | Sensor reading every 5 seconds                  |
 | ❄️ **Cooler Task**             | 🙂 Tiến Khoa          | Activate based on temperature thresholds        |
-| 🔥 **Heater Task**             | 😂 Minh Trí           | LED indication: Green, Orange, Red based on temperature range |
+| 🔥 **Heater Task**             | ❤️‍🔥: Minh Trí           | LED indication: Green, Orange, Red based on temperature range |
 | 💧 **Humidifier Task**         | 👏 Thanh Kim          | FSM implementation: Green (5s) → Yellow (3s) → Red (2s) cycle |
 | 📑 **Final Report & Docs**     | ✨ Anh Toàn, ✨ Thái An | Documentation, GitHub README, and final report  |
 
