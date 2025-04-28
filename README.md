@@ -48,21 +48,24 @@ Develop a Smart Climate Control System to demonstrate the principles and applica
 
 ---
 ### 📁 Project Structure
-```📦project
- ┣ 📜cooler.c
- ┣ 📜cooler.h
- ┣ 📜heater.c
- ┣ 📜heater.h
- ┣ 📜htmsensor.c
- ┣ 📜htmsensor.h
- ┣ 📜humidifier.cpp
- ┣ 📜humidifier.h
- ┣ 📜led_blinky.c
- ┣ 📜led_blinky.h
- ┣ 📜light_control.c
- ┣ 📜light_control.h
- ┣ 📜scheduler.c
- ┣ 📜scheduler.h
- ┣ 📜software_time.c
- ┗ 📜software_time.h
+```
+📦src
+ ┣ 📂project
+ ┃ ┣ 📜cooler.c
+ ┃ ┣ 📜cooler.h
+ ┃ ┣ 📜heater.c
+ ┃ ┣ 📜heater.h
+ ┃ ┣ 📜htmsensor.c
+ ┃ ┣ 📜htmsensor.h
+ ┃ ┣ 📜humidifier.cpp
+ ┃ ┣ 📜humidifier.h
+ ┃ ┣ 📜led_blinky.c
+ ┃ ┣ 📜led_blinky.h
+ ┃ ┣ 📜light_control.c
+ ┃ ┣ 📜light_control.h
+ ┃ ┣ 📜scheduler.c
+ ┃ ┣ 📜scheduler.h
+ ┃ ┣ 📜software_time.c
+ ┃ ┗ 📜software_time.h
+ ┗ 📜main.cpp
 ```
