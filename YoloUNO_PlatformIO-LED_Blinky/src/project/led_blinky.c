@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 // Hardware Definitions
-#define LED_BLINKY_PIN  48  // Onboard LED (GPIO48)
+#define LED_BLINKY_PIN  6  // Onboard LED (GPIO48)
 
 // States
 #define LED_OFF  0
@@ -15,7 +15,7 @@ static int led_state = LED_OFF;
 void init_led_blinky(void) {
   pinMode(LED_BLINKY_PIN, OUTPUT);
   digitalWrite(LED_BLINKY_PIN, LOW);  // Start with LED off
-  setTimer(1, 1000);  // Initial 1s delay before first blink
+  setTimer(1, 100000);  // Initial 1s delay before first blink
 }
 
 void led_blinky_task(void) {
@@ -33,6 +33,6 @@ void led_blinky_task(void) {
         led_state = LED_OFF;  // Handle invalid states
         break;
     }
-    setTimer(1, 1000);  // Reset timer for next state (1s interval)
+    setTimer(1, 100000);  // Reset timer for next state (1s interval)
   }
 }
