@@ -1,4 +1,4 @@
-#include "SmartClimateControl.h"
+#include "htmsensor.h"
 #include "software_time.h"
 #include <Arduino.h>
 #include <Wire.h>
