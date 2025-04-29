@@ -1,10 +1,9 @@
 /*
- * SmartClimateControl.h
+ * htmsensor.h
  * 
  * Header file for the Smart Climate Control System on the YoloUNO platform (ESP32 S3).
- * Manages humidity and temperature readings from the DHT20 sensor (I2C) every 5 seconds
- * using a custom scheduler and software timer. Includes features like serial output with
- * timestamps, error retry, data averaging, low-power mode, and serial command interface.
+ * Reads humidity and temperature from the DHT20 sensor (I2C) every 5 seconds using a
+ * custom scheduler and software timer. Outputs data to Serial with timestamps.
  * No actuators or delay() calls are used.
  * 
  * Note: Uses DHT20 sensor for humidity and temperature readings via I2C.
@@ -16,34 +15,30 @@
 #ifndef SMART_CLIMATE_CONTROL_H
 #define SMART_CLIMATE_CONTROL_H
 
-#include "Arduino.h"
-#include "scheduler.h"
-#include "software_time.h"
-#include <Wire.h>
-#include <DHT20.h> // Library for DHT20 sensor (humidity and temperature)
-#include <esp_sleep.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// Configuration constants
-#define SENSOR_READ_INTERVAL 5000       // Sensor reading interval: 5 seconds (ms)
-#define SENSOR_TIMER 0                  // Timer index for sensor readings
-#define RETRY_TIMER 1                   // Timer index for initialization retries
-#define SERIAL_BAUD 115200              // Serial baud rate
-#define MAX_SENSOR_RETRIES 5            // Maximum retries for DHT20 initialization
-#define AVG_BUFFER_SIZE 3               // Buffer size for averaging sensor readings
-#define COMMAND_BUFFER_SIZE 16          // Serial command buffer size
+void init_smart_climate_control(void);
+void smart_climate_control_task(void);
 
-// Data structure for sensor readings (humidity and temperature)
-struct ClimateData {
-    float temperature;
-    float humidity;
-    bool valid;
-};
+#ifdef __cplusplus
+}
+#endif
 
-// Function prototypes
-bool initHardware();                    // Initialize DHT20 sensor and Serial
-bool averageSensorReadings(ClimateData &result); // Average last 3 sensor readings
-void processSerialCommands();           // Process serial commands (READ, STATUS)
-void SensorReadTask();                  // Task to read sensor and handle features
+#endif /* htmsensor_h */
 
-#endif 
-// SMART_CLIMATE_CONTROL_H//TODO: IMPLEMENT HTMSENSOR KHÔI VĨ 
+/*What is extern "C"?
+Purpose: In C++, the compiler uses name mangling to encode function names with additional information (e.g., parameter types, namespaces) 
+to support features like function overloading. This results in complex symbol names in the compiled object 
+code (e.g., _Z3fooi for a function foo(int)).
+Problem: C code does not use name mangling; it generates simple symbol names (e.g., foo for foo). If a C++ program tries to call a C function 
+or vice versa, the linker may fail to match the mangled C++ names with the unmangled C names, causing linking errors.
+Solution: extern "C" tells the C++ compiler to treat the enclosed declarations (functions, variables, etc.) as if they were C functions, 
+disabling name mangling and using the C calling convention.*/
+
+/*Why am I using this in my header file?
+Effect: The functions init_smart_climate_control and smart_climate_control_task are declared with C linkage. In the compiled code, their symbols 
+remain simple (e.g., init_smart_climate_control instead of a mangled name like _Z22init_smart_climate_controlv).
+Why Needed: The scheduler’s SCH_Add_Task likely expects a C-style function pointer. Without extern "C", the C++ compiler would mangle the task 
+function’s name, causing a linker error when the scheduler tries to reference smart_climate_control_task.*/
