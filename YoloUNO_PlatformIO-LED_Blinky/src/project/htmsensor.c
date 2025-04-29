@@ -1,35 +1,4 @@
-#include "Arduino.h"
-#include "scheduler.h"
-#include "software_time.h"
-#include <Wire.h>
-#include <AHT20.h> // Library for DHT20 sensor (humidity and temperature only)
-#include <esp_sleep.h> // For low-power mode
-
-// Sensor reading interval: 5 seconds (in milliseconds)
-#define SENSOR_READ_INTERVAL 5000
-
-// Timer indices
-#define SENSOR_TIMER 0
-#define RETRY_TIMER 1
-
-// Serial baud rate
-#define SERIAL_BAUD 115200
-
-// Maximum retries for DHT20 initialization
-#define MAX_SENSOR_RETRIES 5
-
-// Buffer size for averaging sensor readings
-#define AVG_BUFFER_SIZE 3
-
-// Serial command buffer
-#define COMMAND_BUFFER_SIZE 16
-
-// Data structure for sensor readings (humidity and temperature)
-struct ClimateData {
-    float temperature;
-    float humidity;
-    bool valid;
-};
+#include "htmsensor.h"
 
 // Global variables
 ClimateData latestData; // Latest sensor reading
@@ -40,7 +9,7 @@ char commandBuffer[COMMAND_BUFFER_SIZE]; // Serial command buffer
 uint8_t commandIndex = 0; // Current command buffer position
 
 // DHT20 sensor instance
-AHT20 dht20;
+DHT20 dht20;
 
 // Initialize hardware (DHT20 sensor and Serial)
 bool initHardware() {
@@ -132,7 +101,7 @@ void processSerialCommands() {
         } else {
             commandBuffer[commandIndex++] = c;
         }
- septum
+    }
     if (commandIndex >= COMMAND_BUFFER_SIZE - 1) {
         commandIndex = 0; // Reset buffer on overflow
     }
@@ -149,12 +118,12 @@ void processSerialCommands() {
  * - Scheduled via provided scheduler, no delay() calls
  * - Enters light sleep between scheduler ticks for power efficiency
  */
-void SensorReadTask(void) {
+void SensorReadTask() {
     if (isTimerExpired(SENSOR_TIMER)) {
         // Read humidity and temperature from DHT20
         if (dht20.available()) {
-            latestData.temperature = dht20.getTemperature();
-            latestData.humidity = dht20.getHumidity();
+            latestData.temperature = dht20.readTemperature();
+            latestData.humidity = dht20.readHumidity();
             latestData.valid = true;
             
             // Store in buffer for averaging
@@ -236,6 +205,8 @@ void SensorReadTask(void) {
  * - No delay() calls:
  *   - All timing handled by provided scheduler (10ms ticks) and software timer
  *   - Serial output, command processing, and retry logic are non-blocking
+ * - Sensor:
+ *   - Uses DHT20 sensor (I2C) for humidity and temperature readings
  */
 
 void setup() {
