@@ -1,11 +1,11 @@
 #include <Arduino.h>
-#include "project/software_time.h"
-#include "project/humidifier.h"
-#include "project/scheduler.h"
-#include "project/cooler.h"
-#include "project/heater.h"
-#include "project/led_blinky.h"
-#include "project/htmsensor.h"
+#include "software_time.h"
+#include "humidifier.h"
+#include "scheduler.h"
+#include "cooler.h"
+#include "heater.h"
+#include "led_blinky.h"
+#include "htmsensor.h"
 void setup()
 {   
     

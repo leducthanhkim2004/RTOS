@@ -2,18 +2,12 @@
 #ifndef HUMIDIFIER_H
 #define HUMIDIFIER_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern float humidifier_threshold;
-void init_humidifier(void);
 void humidifier_fsm(void);
-void red_humid(void);
-void setLedColor(int color);
+#define INIT 0
+#define CHECK_STATE 1
+#define GREEN 2
+#define YELLOW 3
+#define RED 4
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif /* HUMIDIFIER_H */

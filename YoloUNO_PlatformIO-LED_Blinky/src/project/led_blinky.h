@@ -6,7 +6,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 void init_led_blinky(void);
 void led_blinky_task(void);
 
