@@ -13,7 +13,7 @@
 #define YELLOW 3
 #define RED 4
 
-float humidifier_threshold = 90.0;
+float humidifier_threshold = 40.0; 
 static int state = INIT;
 static DHT20 dht20;
 float current_humid = 0.0;
