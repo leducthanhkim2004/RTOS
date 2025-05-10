@@ -54,9 +54,9 @@ void heater_task()
         else if (current_temp > THRESHOLD_NORMAL)
         {
             Serial.println("Temperature over normal. Starting heater sequence.Red led");
-            digitalWrite(HEATER_LED_PIN1, HIGH); // Turn on LED1
-            digitalWrite(HEATER_LED_PIN2, HIGH);  // Turn off LED2
-            setTimer(Timer_ID, 5000);            // 5 seconds
+            digitalWrite(HEATER_LED_PIN1, HIGH); 
+            digitalWrite(HEATER_LED_PIN2, HIGH);  
+            setTimer(Timer_ID, 5000);            
         }
         heater_state = HEATER_CHECK_STATE;
     default:

@@ -1,6 +1,7 @@
 #include "cooler.h"
 #include "software_time.h"
 #include "DHT20.h"
+
 #define TIMER_ID 3
 static int state = INIT;
 static DHT20 dht20;
@@ -44,8 +45,7 @@ void cooler_task()
             digitalWrite(D6, LOW);
             setTimer(TIMER_ID, 3000);
             break;
-        default:
-            state = INIT; 
+        default: 
             break;
         }
     }

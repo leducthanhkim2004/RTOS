@@ -46,7 +46,6 @@ void htmsensor_task()
         break;             // FIXED: Added break statement
 
     default:
-        state = INIT; // FIXED: Added default handler
         break;
     }
 }
