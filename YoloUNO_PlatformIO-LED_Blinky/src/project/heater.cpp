@@ -42,7 +42,7 @@ void heater_task()
             heater_state = HEATER_YELLOW;
             Serial.println("Heater state:  YELLOW");
         }
-        else if (currentTemperature = > THRESHOLD_NORMAL)
+        else if (currentTemperature >= THRESHOLD_NORMAL)
         {
             heater_state = HEATER_RED;
             Serial.println("Heater state:  RED");
@@ -62,7 +62,7 @@ void heater_task()
             Serial.println("Heater state:  GREEN");
         }
 
-        else if (currentTemperature = > THRESHOLD_NORMAL)
+        else if (currentTemperature >= THRESHOLD_NORMAL)
         {
             heater_state = HEATER_RED;
             Serial.println("Heater state:  RED");

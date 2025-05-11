@@ -1,23 +1,19 @@
 #include "cooler.h"
 #include "software_time.h"
-#include "DHT20.h"
 #include "htmsensor.h"
 #define TIMER_ID 2
 static int state = INIT;
-static DHT20 dht20;
-static float current_temp = 0.0;
-float_cooler_threshold = 25.0;
+float cooler_threshold = 25.0;
 void cooler_on()
 {
     digitalWrite(D5, HIGH); 
     digitalWrite(D6, LOW);  
-    Serial.println("Cooler ON");
 }
 void cooler_off()
 {
     digitalWrite(D5, LOW); 
     digitalWrite(D6, LOW);
-    Serial.println("Cooler OFF");
+    
 }
 void cooler_task()
 {
@@ -37,8 +33,11 @@ void cooler_task()
             break;
         setTimer(TIMER_ID, 100);
         cooler_off();
-        if(current_temp > cooler_threshold)
+        if(currentTemperature > cooler_threshold)
         {
+            
+            Serial.print("Current temperature:");
+            Serial.println(currentTemperature);
             Serial.println("Cooler state:  ON");
             state = COOLER_ON;
             cooler_on();
@@ -49,8 +48,10 @@ void cooler_task()
             break;
         setTimer(TIMER_ID, 100);
         cooler_on();
-        if(current_temp <= cooler_threshold)
+        if(currentTemperature <= cooler_threshold)
         {
+            Serial.print("Current temperature:");
+            Serial.println(currentTemperature);
             Serial.println("Cooler state:  OFF");
             state = COOLER_OFF;
             cooler_off();
