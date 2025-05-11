@@ -1,10 +1,10 @@
 #include "humidifier.h"
 #include "DHT20.h"
 #include "software_time.h"
-
+#include "htmsensor.h"
 #define D7 10
 #define D8 17
-#define TIMER_ID 4 // Use a consistent timer ID
+#define TIMER_ID 1 // Use a consistent timer ID
 
 // Define states
 #define INIT 0
@@ -15,80 +15,70 @@
 
 float humidifier_threshold = 40.0;
 static int state = INIT;
-static DHT20 dht20;
-float current_humid = 0.0;
 
 void humidifier_fsm(void)
 {
   switch (state)
   {
   case INIT:
-    Serial.begin(115200);
     pinMode(D7, OUTPUT);
     pinMode(D8, OUTPUT);
-    dht20.begin();
     setTimer(TIMER_ID, 100);
-    state = CHECK_STATE;
+    state = OFF;
     Serial.println("Humidifier initialized.");
     break;
 
-  case CHECK_STATE:
-    if (!isTimerExpired(TIMER_ID))
-      break;
-
-    dht20.read();
-    current_humid = dht20.getHumidity();
-    Serial.print("Current humidity: ");
-    Serial.print(current_humid);
-    Serial.println("%");
-
-    if (current_humid < humidifier_threshold)
+  case OFF:
+    digitalWrite(D7, LOW);
+    digitalWrite(D8, LOW);
+    if (isTimerExpired(TIMER_ID))
     {
-      Serial.println("Humidity below threshold. Starting humidifier sequence.");
-      state = GREEN;
-    }
-    else
-    {
-      Serial.println("Humidity is above threshold, no action needed.");
-      digitalWrite(D7, LOW); // Turn LEDs off
-      digitalWrite(D8, LOW);
-      setTimer(TIMER_ID, 300); // Check again in 3 seconds
+      if (currentHumidity < humidifier_threshold)
+      {
+        Serial.println("Humidifier state: ON");
+        state = GREEN;
+        setTimer(TIMER_ID, 100);
+      }
+      else
+      {
+        Serial.println("Humidifier state: OFF");
+        state = OFF;
+        setTimer(TIMER_ID, 300);
+      }
     }
     break;
 
   case GREEN:
-    if (!isTimerExpired(TIMER_ID))
-      break;
-
-    Serial.println("Humidifier sequence: GREEN ");
-    digitalWrite(D7, HIGH); // Turn on GREEN
+    digitalWrite(D7, HIGH);
     digitalWrite(D8, LOW);
-    setTimer(TIMER_ID, 500); 
-    state = YELLOW;
+    if (isTimerExpired(TIMER_ID))
+    {
+      state = YELLOW;
+      setTimer(TIMER_ID, 500);
+      Serial.println("Humidifier sequence: GREEN LED ON");
+    }
     break;
-
   case YELLOW:
-    if (!isTimerExpired(TIMER_ID))
-      break;
-
-    Serial.println("Humidifier sequence: YELLOW");
-    digitalWrite(D7, LOW); // Change to YELLOW
+    // todo: YELLOW LED
+    digitalWrite(D7, LOW);
     digitalWrite(D8, HIGH);
-    setTimer(TIMER_ID, 300); 
-    state = RED;
+    if (isTimerExpired(TIMER_ID))
+    {
+      state = RED;
+      setTimer(TIMER_ID, 300);
+      Serial.println("Humidifier sequence: YELLOW LED ON");
+    }
     break;
-
   case RED:
-    if (!isTimerExpired(TIMER_ID))
-      break;
-
-    Serial.println("Humidifier sequence complete. Checking humidity again.");
-    digitalWrite(D7, HIGH); // Change to RED
+    digitalWrite(D7, HIGH);
     digitalWrite(D8, HIGH);
-    setTimer(TIMER_ID, 200); 
-    state = CHECK_STATE;
+    if (isTimerExpired(TIMER_ID))
+    {
+      state = OFF;
+      setTimer(TIMER_ID, 200);
+      Serial.println("Humidifier sequence: RED LED ON");
+    }
     break;
-
   default:
     break;
   }

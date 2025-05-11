@@ -22,25 +22,21 @@ void led_blinky_task(void)
         state = LED_ON;
         break;
     case LED_ON:
-
-        if (isTimerExpired(0) != 1)
-        {
-            break;
-        }
-
-        setTimer(0, 100);
-        state = LED_OFF;
         digitalWrite(LED_PIN, HIGH);
+        if (isTimerExpired(0) == 1)
+        {
+            setTimer(0, 1000);
+            state = LED_OFF;
+        }
         break;
 
     case LED_OFF:
-        if (isTimerExpired(0) != 1)
-        {
-            break;
-        }
-        setTimer(0, 100);
-        state = LED_ON;
         digitalWrite(LED_PIN, LOW);
+        if (isTimerExpired(0) == 1)
+        {
+            setTimer(0, 100);
+            state = LED_ON;
+        }
         break;
     }
 }

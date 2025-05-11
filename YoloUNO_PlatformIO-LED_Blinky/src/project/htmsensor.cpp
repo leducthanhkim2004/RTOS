@@ -22,28 +22,29 @@ void htmsensor_task()
         break;
 
     case RUNNING:
-        if (!isTimerExpired(1))
-            break;
-        state = WAITING;
-        setTimer(1, 500);
+        // read data while running
         dht20.read();
         currentTemperature = dht20.getTemperature();
         currentHumidity = dht20.getHumidity();
         Serial.print("Temperature: ");
-        Serial.print(currentTemperature); 
-        Serial.println(" C");             
-        Serial.print("Humidity: ");
+        Serial.print(currentTemperature);
+        Serial.print(" °C, Humidity: ");
         Serial.print(currentHumidity);
-        Serial.println("%"); 
-        break;               
+        if (isTimerExpired(1) == 1)
+        {
+            state = WAITING;
+            setTimer(1, 500); // Wait for 1 second before next reading
+        }
+        break;
 
     case WAITING:
-        if (!isTimerExpired(1))
-            break;  
-        state = RUNNING; 
-        Serial.println("HTMSensor waiting for next reading.");
-        setTimer(1, 100); 
-        break;            
+        Serial.println("Waiting for next reading...");
+        if (isTimerExpired(1) == 1)
+        {
+            state = RUNNING;
+            setTimer(1, 100);
+        }
+        break;
 
     default:
         break;
