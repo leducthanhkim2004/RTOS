@@ -1,12 +1,24 @@
 #include "cooler.h"
 #include "software_time.h"
 #include "DHT20.h"
-
-#define TIMER_ID 3
+#include "htmsensor.h"
+#define TIMER_ID 2
 static int state = INIT;
 static DHT20 dht20;
 static float current_temp = 0.0;
-float cooler_threshold = 25.0;
+float_cooler_threshold = 25.0;
+void cooler_on()
+{
+    digitalWrite(D5, HIGH); 
+    digitalWrite(D6, LOW);  
+    Serial.println("Cooler ON");
+}
+void cooler_off()
+{
+    digitalWrite(D5, LOW); 
+    digitalWrite(D6, LOW);
+    Serial.println("Cooler OFF");
+}
 void cooler_task()
 {
     switch (state)
@@ -16,37 +28,33 @@ void cooler_task()
         Serial.begin(115200);
         pinMode(D5, OUTPUT);
         pinMode(D6, OUTPUT);
-        dht20.begin();
-        state = CHECK_STATE;
+        state = COOLER_OFF;
         Serial.println("Cooler initialized.");
         setTimer(TIMER_ID, 100);
         break;
-    case CHECK_STATE:
-        if (!isTimerExpired(TIMER_ID))
+    case COOLER_OFF:
+        if(!isTimerExpired(TIMER_ID))
             break;
-
-        dht20.read();
-        current_temp = dht20.getTemperature();
-        Serial.print("Current temperature: ");
-        Serial.print(current_temp);
-        Serial.println("°C");
-
-        if (current_temp > cooler_threshold)
+        setTimer(TIMER_ID, 100);
+        cooler_off();
+        if(current_temp > cooler_threshold)
         {
-            Serial.println("Temperature above threshold. Starting cooler sequence.");
-            digitalWrite(D5, HIGH);
-            digitalWrite(D6, LOW);
-            setTimer(TIMER_ID, 5000);
+            Serial.println("Cooler state:  ON");
+            state = COOLER_ON;
+            cooler_on();
         }
-        else
+        break;
+    case COOLER_ON:
+        if(!isTimerExpired(TIMER_ID))
+            break;
+        setTimer(TIMER_ID, 100);
+        cooler_on();
+        if(current_temp <= cooler_threshold)
         {
-            Serial.println("Temperature is below threshold, no action needed.");
-            digitalWrite(D5, LOW);
-            digitalWrite(D6, LOW);
-            setTimer(TIMER_ID, 3000);
-            break;
-        default: 
-            break;
+            Serial.println("Cooler state:  OFF");
+            state = COOLER_OFF;
+            cooler_off();
         }
+        break;
     }
 }

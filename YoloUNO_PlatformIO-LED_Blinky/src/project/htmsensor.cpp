@@ -30,20 +30,20 @@ void htmsensor_task()
         currentTemperature = dht20.getTemperature();
         currentHumidity = dht20.getHumidity();
         Serial.print("Temperature: ");
-        Serial.print(currentTemperature); // FIXED: Added printing the temperature value
-        Serial.println(" C");             // FIXED: Added units
+        Serial.print(currentTemperature); 
+        Serial.println(" C");             
         Serial.print("Humidity: ");
         Serial.print(currentHumidity);
-        Serial.println("%"); // FIXED: Added println
-        break;               // FIXED: Removed duplicate state assignment
+        Serial.println("%"); 
+        break;               
 
     case WAITING:
         if (!isTimerExpired(1))
-            break;       // FIXED: Added timer check
-        state = RUNNING; // FIXED: Changed to RUNNING (was INIT)
+            break;  
+        state = RUNNING; 
         Serial.println("HTMSensor waiting for next reading.");
-        setTimer(1, 100); // FIXED: Set 5 seconds between readings
-        break;             // FIXED: Added break statement
+        setTimer(1, 100); 
+        break;            
 
     default:
         break;
