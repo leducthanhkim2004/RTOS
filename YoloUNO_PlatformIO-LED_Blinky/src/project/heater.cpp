@@ -11,7 +11,7 @@
 #define HEATER_STATE_INIT 0
 #define HEATER_CHECK_STATE 1
 
-#define Timer_ID 1
+#define Timer_ID 2
 static int heater_state = HEATER_STATE_INIT;
 
 void heater_task()
@@ -25,60 +25,58 @@ void heater_task()
         pinMode(HEATER_LED_PIN2, OUTPUT);
         Serial.begin(115200);
         Serial.println("Heater initialized");
-        setTimer(Timer_ID, 100);
+        setTimer(Timer_ID ,10);
         heater_state = HEATER_GREEN;
         break;
     case HEATER_GREEN:
         digitalWrite(HEATER_LED_PIN1, HIGH);
         digitalWrite(HEATER_LED_PIN2, LOW);
+        Serial.println("HEATER GREEN");
         if (isTimerExpired(Timer_ID))
         {
-            if (THRESHOLD_LOW < currentTemperature < THRESHOLD_NORMAL)
-            {
-                heater_state = HEATER_YELLOW;
-            }
-            else if (currentTemperature >= THRESHOLD_NORMAL)
+            if (THRESHOLD_LOW > currentTemperature)
             {
                 heater_state = HEATER_RED;
             }
-            //500 FOR GREEN
-            setTimer(Timer_ID, 500);
+            else if (currentTemperature >= THRESHOLD_NORMAL)
+            {
+                heater_state = HEATER_YELLOW;
+            }
         }
         break;
     case HEATER_YELLOW:
         //TODO: YELLOW LED
         digitalWrite(HEATER_LED_PIN1, LOW);
         digitalWrite(HEATER_LED_PIN2, HIGH);
+        Serial.println("HEATER YELLOW");
         if(isTimerExpired(Timer_ID))
         {
-            if (currentTemperature >= THRESHOLD_NORMAL)
-            {
-                heater_state = HEATER_RED;
-            }
-            else if (currentTemperature <= THRESHOLD_LOW)
+            if (currentTemperature <= THRESHOLD_NORMAL && currentTemperature >= THRESHOLD_LOW)
             {
                 heater_state = HEATER_GREEN;
             }
-            // 300 FOR YELLOW
-            setTimer(Timer_ID, 300);
+            else if (currentTemperature < THRESHOLD_LOW)
+            {
+                heater_state = HEATER_RED;
+            }
+            
         }
         break;
     case HEATER_RED:
         //TODO: RED LED
         digitalWrite(HEATER_LED_PIN1, HIGH);
         digitalWrite(HEATER_LED_PIN2, HIGH);
+        Serial.println("HEATER RED");
         if (isTimerExpired(Timer_ID))
         {
-            if (currentTemperature < THRESHOLD_NORMAL)
+            if (currentTemperature > THRESHOLD_NORMAL)
             {
                 heater_state = HEATER_YELLOW;
             }
-            else if (currentTemperature <= THRESHOLD_LOW)
+            else if (currentTemperature <= THRESHOLD_NORMAL && currentTemperature >= THRESHOLD_LOW )
             {
                 heater_state = HEATER_GREEN;
             }
-            // 100 FOR RED
-            setTimer(Timer_ID, 200);
         }
         break;
     default:

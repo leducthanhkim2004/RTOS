@@ -6,7 +6,7 @@
 #include "DHT20.h"
 float currentTemperature = 0.0;
 float currentHumidity = 0.0;
-
+#define Timer 1
 DHT20 dht20;
 static int state = INIT;
 void htmsensor_task()
@@ -16,7 +16,7 @@ void htmsensor_task()
     case INIT:
         Serial.begin(115200);
         dht20.begin();
-        setTimer(1, 100);
+        setTimer(Timer, 10);
         state = RUNNING;
         Serial.println("Sensor initialized.");
         break;
@@ -30,7 +30,8 @@ void htmsensor_task()
         Serial.print(currentTemperature);
         Serial.print(" °C, Humidity: ");
         Serial.print(currentHumidity);
-        if (isTimerExpired(1) == 1)
+        Serial.println("%");
+        if (isTimerExpired(Timer) == 1)
         {
             state = WAITING;
             setTimer(1, 500); // Wait for 1 second before next reading
@@ -39,10 +40,9 @@ void htmsensor_task()
 
     case WAITING:
         Serial.println("Waiting for next reading...");
-        if (isTimerExpired(1) == 1)
+        if (isTimerExpired(Timer) == 1)
         {
-            state = RUNNING;
-            setTimer(1, 100);
+          state = RUNNING;
         }
         break;
 

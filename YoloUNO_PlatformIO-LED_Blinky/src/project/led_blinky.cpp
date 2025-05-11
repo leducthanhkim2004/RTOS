@@ -6,7 +6,7 @@
 #define LED_ON 0
 #define LED_OFF 1
 #define INIT 2
-
+#define TIMER_ID 0
 // Use pin definitions for clarity - LED_BUILTIN or specific pin number
 #define LED_PIN GPIO_NUM_48 // Green LED pin
 
@@ -18,21 +18,22 @@ void led_blinky_task(void)
     {
     case INIT:
         pinMode(LED_PIN, OUTPUT);
-        setTimer(0, 100);
+        setTimer(0, 10);
         state = LED_ON;
+        Serial.println(TIMER_ID);
         break;
     case LED_ON:
         digitalWrite(LED_PIN, HIGH);
-        if (isTimerExpired(0) == 1)
+        if (isTimerExpired(TIMER_ID) == 1)
         {
-            setTimer(0, 1000);
+            setTimer(0, 100);
             state = LED_OFF;
         }
         break;
 
     case LED_OFF:
         digitalWrite(LED_PIN, LOW);
-        if (isTimerExpired(0) == 1)
+        if (isTimerExpired(TIMER_ID) == 1)
         {
             setTimer(0, 100);
             state = LED_ON;
